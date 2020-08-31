@@ -3,7 +3,7 @@ package com.vapsquare.stock.dbservice.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "quote", catalog = "test")
+@Table(name = "quote", catalog = "Elements")
 public class Quote {
 
     @Id
@@ -12,12 +12,17 @@ public class Quote {
     private Integer id;
 
     @Column(name = "user_name")
-    private String username;
+    private String userName;
 
     @Column(name = "quote")
     private String quote;
 
     public Quote() {
+    }
+
+    public Quote(String userName, String quote) {
+        this.userName = userName;
+        this.quote = quote;
     }
 
     public Integer getId() {
@@ -28,12 +33,12 @@ public class Quote {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getQuote() {
