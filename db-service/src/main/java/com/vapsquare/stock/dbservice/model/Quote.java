@@ -3,7 +3,7 @@ package com.vapsquare.stock.dbservice.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "quote", catalog = "Elements")
+@Table(name = "quotes", catalog = "Elements")
 public class Quote {
 
     @Id

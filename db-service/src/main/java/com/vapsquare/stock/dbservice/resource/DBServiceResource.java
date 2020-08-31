@@ -6,17 +6,20 @@ import com.vapsquare.stock.dbservice.repository.QuotesRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/rest/db")
 public class DBServiceResource {
+    /**
+     * in this class, we'll ad the CRUD operations for username and quotes.
+     */
 
+    private QuotesRepository quotesRepository;
 
-    private QuotesRepository quoresRepository;
-
-    public DBServiceResource(QuotesRepository quoresRepository) {
-        this.quoresRepository = quoresRepository;
+    public DBServiceResource(QuotesRepository quotesRepository) {
+        this.quotesRepository = quotesRepository;
     }
 
     // below endpoint is for getting the quotes for a user
@@ -34,7 +37,7 @@ public class DBServiceResource {
         quotes.getQuotes()
                 .stream()
                 .map(quote -> new Quote(quotes.getUserName(), quote))
-                .forEach(quote -> quoresRepository.save(quote));
+                .forEach(quote -> quotesRepository.save(quote));
 
         // we can write above forEach without map like below also.
         /*.forEach(quote -> {
@@ -43,8 +46,15 @@ public class DBServiceResource {
         return getQuotesByUserName(quotes.getUserName());
     }
 
+    @DeleteMapping("/delete/{username}")
+    public List<Quote> delete(@PathVariable("username") final String username){
+        List<Quote> quotes = quotesRepository.findByUserName(username);
+        quotes.forEach(quote -> quotesRepository.delete(quote));
+        return quotes;
+    }
+
     private List<String> getQuotesByUserName(String username) {
-        return quoresRepository.findByUserName(username)
+        return quotesRepository.findByUserName(username)
                 .stream()
                 .map(Quote::getQuote)
                 .collect(Collectors.toList());
